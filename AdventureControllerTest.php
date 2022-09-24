@@ -1,5 +1,6 @@
 <?php
 require_once 'Main.php';
+
 use PHPUnit\Framework\TestCase;
 
 class AdventureControllerTest extends TestCase
@@ -9,20 +10,62 @@ class AdventureControllerTest extends TestCase
     // add different versions of suts for different tests
     // update the submitted assignment
 
-    public function setUp() : void {
+    public function setUp(): void
+    {
+        $this->no_option_challenge = new ChallengeModel(
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            array(),
+            array(),
+            array()
+        );
+        $this->end_challenge = new ChallengeModel("id3", "intro", "trait", "level", "_end", "fail_id",
+            array(
+                array("A" => "equal_1_a", "B" => "equal_1_b"),
+                array("A" => "equal_2_a", "B" => "equal_2_b"),
+                array("A" => "equal_3_a", "B" => "equal_3_b")
+            ),
+            array(
+                array("A" => "advantage_1_a", "B" => "advantage_1_b"),
+                array("A" => "advantage_2_a", "B" => "advantage_2_b"),
+            ),
+            array(
+                array("A" => "disadvantage_1_a", "B" => "disadvantage_1_b"),
+                array("A" => "disadvantage_2_a", "B" => "disadvantage_2_b")
+            )
+        );
+        $this->start_challenge = new ChallengeModel("_start", "intro", "trait", "level", "succeed_id", "fail_id",
+            array(
+                array("A" => "equal_1_a", "B" => "equal_1_b"),
+                array("A" => "equal_2_a", "B" => "equal_2_b"),
+                array("A" => "equal_3_a", "B" => "equal_3_b")
+            ),
+            array(
+                array("A" => "advantage_1_a", "B" => "advantage_1_b"),
+                array("A" => "advantage_2_a", "B" => "advantage_2_b"),
+            ),
+            array(
+                array("A" => "disadvantage_1_a", "B" => "disadvantage_1_b"),
+                array("A" => "disadvantage_2_a", "B" => "disadvantage_2_b")
+            )
+        );
         $this->blank_challenge = new ChallengeModel("id", "intro", "trait", "level", "succeed_id", "fail_id",
             array(
-                array("A"=> "equal_1_a","B"=> "equal_1_b"),
-                array("A"=> "equal_2_a","B" => "equal_2_b"),
-                array("A"=> "equal_3_a","B" => "equal_3_b")
+                array("A" => "equal_1_a", "B" => "equal_1_b"),
+                array("A" => "equal_2_a", "B" => "equal_2_b"),
+                array("A" => "equal_3_a", "B" => "equal_3_b")
             ),
             array(
-                array("A"=> "advantage_1_a", "B"=> "advantage_1_b"),
-                array("A"=> "advantage_2_a", "B" => "advantage_2_b"),
+                array("A" => "advantage_1_a", "B" => "advantage_1_b"),
+                array("A" => "advantage_2_a", "B" => "advantage_2_b"),
             ),
             array(
-                array("A"=> "disadvantage_1_a", "B"=> "disadvantage_1_b"),
-                array("A"=> "disadvantage_2_a", "B" => "disadvantage_2_b")
+                array("A" => "disadvantage_1_a", "B" => "disadvantage_1_b"),
+                array("A" => "disadvantage_2_a", "B" => "disadvantage_2_b")
             )
         );
         $this->bus_challenge = new ChallengeModel(
@@ -33,30 +76,30 @@ class AdventureControllerTest extends TestCase
             "seat_challenge",
             "_done",
             array(
-                array("A"=> "You run as fast as you can, and you almost catch up to the bus.",
-                    "B"=> "You run as fast as you can, but you can't seem to gain any ground catching up to the bus."
+                array("A" => "You run as fast as you can, and you almost catch up to the bus.",
+                    "B" => "You run as fast as you can, but you can't seem to gain any ground catching up to the bus."
                 ),
-                array("A"=> "You run with all of your might, and the driver sees you in the mirror waving, and lets you on.",
+                array("A" => "You run with all of your might, and the driver sees you in the mirror waving, and lets you on.",
                     "B" => "You step in a puddle and it slows you down.",
                 ),
-                array("A"=> "The bus pulls over out of pity and lets you on.",
+                array("A" => "The bus pulls over out of pity and lets you on.",
                     "B" => "You couldn't catch up, the bus drives away."
                 )
             ),
             array(
-                array("A"=> "The bus is pulling away, but you are pretty fast and easily catch it.",
-                    "B"=> "The bus is pulling away, and even though you are pretty fast, you can't seem to catch up."
+                array("A" => "The bus is pulling away, but you are pretty fast and easily catch it.",
+                    "B" => "The bus is pulling away, and even though you are pretty fast, you can't seem to catch up."
                 ),
-                array("A"=> "Although harder than you expected, you put your head down and eventually catch up to the bus, getting on.",
-                    "B"=>"You are surprised to find you are not as fast as you once were."
+                array("A" => "Although harder than you expected, you put your head down and eventually catch up to the bus, getting on.",
+                    "B" => "You are surprised to find you are not as fast as you once were."
                 )
             ),
             array(
-                array("B"=> "The bus is pulling away, and you are far to slow to really catch it, and it drives out of sight.",
-                    "A"=> "The bus is pulling away, and even though you are pretty slow, you seem to gain ground."
+                array("B" => "The bus is pulling away, and you are far to slow to really catch it, and it drives out of sight.",
+                    "A" => "The bus is pulling away, and even though you are pretty slow, you seem to gain ground."
                 ),
-                array("B"=> "But try as you might, it eventually gets away.",
-                    "A"=>"By some miracle, you actually flag down the driver to stop, and get on."
+                array("B" => "But try as you might, it eventually gets away.",
+                    "A" => "By some miracle, you actually flag down the driver to stop, and get on."
                 )
             )
         );
@@ -68,36 +111,52 @@ class AdventureControllerTest extends TestCase
             "seat_challenge",
             "_done",
             array(
-                array("A"=> "You run as fast as you can, and you almost catch up to the bus.",
-                    "B"=> "You run as fast as you can, but you can't seem to gain any ground catching up to the bus."
+                array("A" => "You run as fast as you can, and you almost catch up to the bus.",
+                    "B" => "You run as fast as you can, but you can't seem to gain any ground catching up to the bus."
                 ),
-                array("A"=> "You run with all of your might, and the driver sees you in the mirror waving, and lets you on.",
+                array("A" => "You run with all of your might, and the driver sees you in the mirror waving, and lets you on.",
                     "B" => "You step in a puddle and it slows you down.",
                 ),
-                array("A"=> "The bus pulls over out of pity and lets you on.",
+                array("A" => "The bus pulls over out of pity and lets you on.",
                     "B" => "You couldn't catch up, the bus drives away."
                 )
             ),
             array(
-                array("A"=> "The bus is pulling away, but you are pretty fast and easily catch it.",
-                    "B"=> "The bus is pulling away, and even though you are pretty fast, you can't seem to catch up."
+                array("A" => "The bus is pulling away, but you are pretty fast and easily catch it.",
+                    "B" => "The bus is pulling away, and even though you are pretty fast, you can't seem to catch up."
                 ),
-                array("A"=> "Although harder than you expected, you put your head down and eventually catch up to the bus, getting on.",
-                    "B"=>"You are surprised to find you are not as fast as you once were."
+                array("A" => "Although harder than you expected, you put your head down and eventually catch up to the bus, getting on.",
+                    "B" => "You are surprised to find you are not as fast as you once were."
                 )
             ),
             array(
-                array("B"=> "The bus is pulling away, and you are far to slow to really catch it, and it drives out of sight.",
-                    "A"=> "The bus is pulling away, and even though you are pretty slow, you seem to gain ground."
+                array("B" => "The bus is pulling away, and you are far to slow to really catch it, and it drives out of sight.",
+                    "A" => "The bus is pulling away, and even though you are pretty slow, you seem to gain ground."
                 ),
-                array("B"=> "But try as you might, it eventually gets away.",
-                    "A"=>"By some miracle, you actually flag down the driver to stop, and get on."
+                array("B" => "But try as you might, it eventually gets away.",
+                    "A" => "By some miracle, you actually flag down the driver to stop, and get on."
                 )
             )
         );
     }
 
-    public function test_class_attributes(){
+    // Test the constructor
+    public function test__construct()
+    {
+        // create the sut
+        $bro = new BinaryRandomOracle(new RNG());
+        $character = new CharacterModel($bro, "teddy", 0);;
+        $challenge_database = array();
+
+        $sut = new AdventureController($character, $challenge_database);
+
+        // verify the results
+        $this->assertEquals($character, $sut->get_character());
+        $this->assertEquals($challenge_database, $sut->get_challenge_database());
+    }
+
+    public function test_class_attributes()
+    {
 
         $bro = new BinaryRandomOracle(new RNG());
         $character = new CharacterModel($bro, "teddy", 0);
@@ -114,7 +173,8 @@ class AdventureControllerTest extends TestCase
 
     }
 
-    public function test_add_challenge_unique_id() {
+    public function test_add_challenge_unique_id()
+    {
 
         $this->expectException(InvalidArgumentException::class);
 
@@ -125,11 +185,10 @@ class AdventureControllerTest extends TestCase
 
         $sut->add_challenge($this->bus_challenge);
         $sut->add_challenge($this->bus_challenge);
-
-
     }
 
-    public function test_add_challenge_id_check() {
+    public function test_add_challenge_id_check()
+    {
 
         $this->expectException(InvalidArgumentException::class);
 
@@ -142,7 +201,8 @@ class AdventureControllerTest extends TestCase
         $sut->add_challenge($bad_challenge);
     }
 
-    public function test_add_challenge_morethan_5() {
+    public function test_add_challenge_more_than_5()
+    {
         $bro = new BinaryRandomOracle(new RNG());
         $character = new CharacterModel($bro, "teddy", 0);
         $database = array();
@@ -162,87 +222,71 @@ class AdventureControllerTest extends TestCase
         $sut->add_challenge($bad_challenge4);
         $sut->add_challenge($bad_challenge5);
 
-
         $this->assertCount(5, $sut->get_challenge_database());
     }
 
-    public function test_validate_adventure_no_start() {
-        // setup the sut
+    /*
+     * AdventureController should make sure that it contains 3 options for
+     * the equal_options set, and 2 options for the other option sets
+     */
+//    public function test_add_challenge_check_options()
+//    {
+//        $this->expectException(InvalidArgumentException::class);
+//
+//        // set up the sut
+//        $bro = new BinaryRandomOracle(new RNG());
+//        $character = new CharacterModel($bro, "teddy", 0);
+//        $database = array();
+//        $sut = new AdventureController($character, $database);
+//        $sut->add_challenge($this->blank_challenge);
+//
+//
+//    }
+
+    public function test_validate_adventure_no_start()
+    {
+        // set up the sut
         $bro = new BinaryRandomOracle(new RNG());
         $character = new CharacterModel($bro, "teddy", 0);
         $database = array();
         $sut = new AdventureController($character, $database);
-        $sut->add_challenge($this->blank_challenge);
 
+        $sut->add_challenge($this->blank_challenge);
         // call the method
         $result = $sut->validate_adventure();
-
         // verify the result
         $this->assertFalse($result);
 
+        // ************************************************************************************
+
         // making this a stateful test
         // add something else
-        $sut->add_challenge(new ChallengeModel("_start", "intro", "trait", "level", "succeed_id", "fail_id",
-            array(
-                array("A"=> "equal_1_a","B"=> "equal_1_b"),
-                array("A"=> "equal_2_a","B" => "equal_2_b"),
-                array("A"=> "equal_3_a","B" => "equal_3_b")
-            ),
-            array(
-                array("A"=> "advantage_1_a", "B"=> "advantage_1_b"),
-                array("A"=> "advantage_2_a", "B" => "advantage_2_b"),
-            ),
-            array(
-                array("A"=> "disadvantage_1_a", "B"=> "disadvantage_1_b"),
-                array("A"=> "disadvantage_2_a", "B" => "disadvantage_2_b")
-            )
-        ));
-
+        $sut->add_challenge($this->start_challenge);
         // call the method
         $result = $sut->validate_adventure();
-
         // verify the result
         $this->assertTrue($result);
 
         // if this was java, this wouldn't compile
-        // php - dynamically typed language .. would give compile error
+        // php - dynamically typed language ... would give compile error
         // implied requirement that it must return true if there is "_start"
     }
 
-    public function test_validate_adventure_no_end_state() {
-        // setup the sut
+    public function test_validate_adventure_no_end_state()
+    {
+        // set up the sut
         $bro = new BinaryRandomOracle(new RNG());
         $character = new CharacterModel($bro, "teddy", 0);
         $database = array();
         $sut = new AdventureController($character, $database);
-
-        // making this a stateful test
-        // add something else
-        $sut->add_challenge(new ChallengeModel("_start", "intro", "trait", "level", "succeed_id", "fail_id",
-            array(
-                array("A"=> "equal_1_a","B"=> "equal_1_b"),
-                array("A"=> "equal_2_a","B" => "equal_2_b"),
-                array("A"=> "equal_3_a","B" => "equal_3_b")
-            ),
-            array(
-                array("A"=> "advantage_1_a", "B"=> "advantage_1_b"),
-                array("A"=> "advantage_2_a", "B" => "advantage_2_b"),
-            ),
-            array(
-                array("A"=> "disadvantage_1_a", "B"=> "disadvantage_1_b"),
-                array("A"=> "disadvantage_2_a", "B" => "disadvantage_2_b")
-            )
-        ));
+        $sut->add_challenge($this->end_challenge);
 
         // call the method
-        $result = $sut->validate_adventure();
+        $result = $sut->validate_adventure_end_state();
 
         // verify the result
         $this->assertTrue($result);
-
     }
-
 }
-
 
 ?>

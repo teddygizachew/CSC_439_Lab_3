@@ -375,6 +375,21 @@ class ChallengeModel
         return $this->failure_next;
     }
 
+    public function get_equal_options(): array
+    {
+        return $this->equal_options;
+    }
+
+    public function get_character_advantage_options(): array
+    {
+        return $this->character_advantage_options;
+    }
+
+    public function get_challenge_advantage_options(): array
+    {
+        return $this->challenge_advantage_options;
+    }
+
     /**
      * Compares the character attribute level with the challenge threat level
      * and runs the challenge accordingly.
@@ -429,7 +444,7 @@ class ChallengeModel
         );
         //initialize succes/fail counts at 0.
         $success_count = 0;
-        $fail_count = 0;
+        $failure_count = 0;
         //foreach of the options in the attribute given in the param:
         //(Note the bug here, should be foreach($options as $option) )
         //+1 for static analysis, -1 for coverage analysis
@@ -497,24 +512,39 @@ class AdventureController
         } else {
             $this->challenge_database[$challenge->get_id()] = $challenge;
         }
+
+//        if (count($challenge->get_equal_options()) != 3 ||
+//            count($challenge->get_character_advantage_options()) != 2 ||
+//            count($challenge->get_challenge_advantage_options()) != 2
+//        ) {
+//            print_r("\n**************\n");
+//            print_r(count($challenge->get_equal_options())."\n");
+//            print_r(count($challenge->get_character_advantage_options())."\n");
+//            print_r(count($challenge->get_challenge_advantage_options())."\n");
+//            print_r("**************\n");
+//
+//            throw new InvalidArgumentException("Not enough options provided!");
+//        }
     }
 
     public function validate_adventure(): bool
     {
         if (!array_key_exists("_start", $this->challenge_database)) {
-            return FALSE;
+            return false;
         }
 
-        $has_end = FALSE;
+        return true;
+    }
+
+    public function validate_adventure_end_state(): bool
+    {
+        $has_end = false;
         foreach ($this->challenge_database as $challenge) {
             if ($challenge->get_succeed_next() == "_end") {
-                $has_end = TRUE;
+                $has_end = true;
             }
         }
-        if (!$has_end) {
-            return FALSE;
-        }
-        return TRUE;
+        return $has_end;
     }
 }
 
